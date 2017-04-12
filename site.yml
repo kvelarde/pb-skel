@@ -1,0 +1,29 @@
+---
+ # Variables are set in group_vars file
+ - name: create instances
+   hosts: all
+   become: True
+   vars_files:
+     - [ "group_vars/{{ deployto }}_secret.yml","group_vars/{{ deployto }}.yml" ]
+
+   roles:
+     - role: my-role1
+       tags:
+         - my-role1
+     - role: my-role2
+       tags:
+             my-role2
+     - role: my-role3
+       tags:
+         - my-role3
+
+- name: logs
+   hosts: all
+   become: True
+   tags:
+     - logs
+   vars_files:
+     - [ "group_vars/{{ deployto }}_secret.yml","group_vars/{{ deployto }}.yml" ]
+   tasks:
+     - shell: echo "done"
+       notify: servers
